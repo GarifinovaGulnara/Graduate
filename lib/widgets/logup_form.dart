@@ -13,6 +13,12 @@ class LogupForm extends StatefulWidget {
 }
 
 class _LogupFormState extends State<LogupForm> {
+
+  String name = '';
+  String login = '';
+  String pass = '';
+
+
   void initFirebase() async{
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
@@ -35,6 +41,7 @@ class _LogupFormState extends State<LogupForm> {
                 decoration: const InputDecoration(
                   hintText: "Фамилия Имя Отчество",
               ),
+              onChanged: (value) => name = value,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: defpaultPadding),
@@ -42,6 +49,7 @@ class _LogupFormState extends State<LogupForm> {
                 decoration: const InputDecoration(
                   hintText: "Телефон",
                 ),
+              onChanged: (value) => login = value,
               ),
             ),
             TextFormField(
@@ -49,10 +57,11 @@ class _LogupFormState extends State<LogupForm> {
               decoration: const InputDecoration(
                 hintText: "Пароль",
               ),
+              onChanged: (value) => pass = value,
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
             OutlinedButton(onPressed: (){
-              FirebaseFirestore.instance.collection('Users').add({'Name': 'nameus', 'Login': '1234', 'Password': '1234'});
+              FirebaseFirestore.instance.collection('Users').add({'Name': name, 'Login': login, 'Password': pass});
             }, 
               child: const Text('Зарегистрироваться'), 
               style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
 import 'package:graduate_work/widgets/login_form.dart';
 import 'package:graduate_work/widgets/logup_form.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class AuthorizationPage extends StatefulWidget {
   const AuthorizationPage({Key? key}) : super(key: key);
@@ -21,6 +23,11 @@ class _AuthorizationPageState extends State<AuthorizationPage>
     _animationTextRotate = Tween<double>(begin: 0, end: 90).animate(_animationController);
   }
 
+  void initFirebase() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  }
+
   void updateView(){
     setState(() {
       _isShowSignUp = !_isShowSignUp;
@@ -32,6 +39,7 @@ class _AuthorizationPageState extends State<AuthorizationPage>
   void initState()
   {
     setUpAnimation();
+    //initFirebase();
     super.initState();
   }
 
