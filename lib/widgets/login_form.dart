@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
 
@@ -15,8 +14,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
 
   bool state = false;
-  String names = '';
-  String passss = '';
+  final controllerPhone = TextEditingController();
+  final controllerPass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +27,20 @@ class _LoginFormState extends State<LoginForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
+              controller: controllerPhone,
+              keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   hintText: "Телефон",
               ),
-              onChanged: (value) => names = value,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: defpaultPadding),
               child: TextFormField(
+                controller: controllerPass,
                 obscureText: true,
                 decoration: const InputDecoration(
                   hintText: "Пароль",
                 ),
-                onChanged: (value) => passss = value,
               ),
             ),
             OutlinedButton(onPressed: () async {
@@ -55,7 +55,7 @@ class _LoginFormState extends State<LoginForm> {
               }
             }, 
             child: const Text('Войти'), style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white),),),
-            Text(state ? 'Error': ''), 
+            Text(state ? 'Ошибка. Аккаунт не найден. Проверьте логин/пароль': '', style: const TextStyle(color: Colors.white),),
           ],
         ),
         ),
@@ -68,18 +68,16 @@ class _LoginFormState extends State<LoginForm> {
     var querySnapshot = await collection.get();
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var name = data['Login'];
-      var phone = data['Name'];
+      var phone = data['Login'];
       var pass = data['Password'];
-      if(name == names)
+      if(phone == controllerPhone.text)
       {
-        if(pass == passss)
+        if(pass == controllerPass.text)
         {
           return true;
         }
       }
     }
-
     return false;
   }
 }

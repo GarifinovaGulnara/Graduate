@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductListWidget extends StatefulWidget {
@@ -8,7 +9,7 @@ class ProductListWidget extends StatefulWidget {
 }
 
 class _ProductListWidgetState extends State<ProductListWidget> {
-  
+
   void onProdTap(){
     Navigator.of(context).pushNamed('/catalog_page/product_list/prod_details');
   }

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
 
@@ -46,12 +48,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                 height: 50,
                 width: 200,
                 child: ElevatedButton(
-                  onPressed: (){}, 
+                  onPressed: (){
+                    FirebaseFirestore.instance.collection('Cart').add({'Count': 1});
+                  }, 
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(btn_color),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
                   ),
-                  child: const Text('Add in Cart'),))
+                  child: const Text('Добавить в корзину'),))
               ]
               ),
             ),
