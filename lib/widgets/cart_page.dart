@@ -45,27 +45,32 @@ class _CartPageState extends State<CartPage>{
                             Image.asset("assets/logo.png"),
                             const SizedBox(width: 15,),
                             Expanded(
-                              child: Column(
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  SizedBox(height: 10),
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: const [
+                                      SizedBox(height: 10),
                                   Text('Name', maxLines: 1, overflow: TextOverflow.ellipsis,),
                                   SizedBox(height: 5,),
                                   Text('Des', style: TextStyle(color: Colors.grey, fontSize: 12), maxLines: 2, overflow: TextOverflow.ellipsis,),
                                   Text('Price', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(onPressed: (){}, icon: const Icon(Icons.remove_circle_outline),),
+                                      const Text('Count'),
+                                      IconButton(onPressed: (){}, icon: const Icon(Icons.add_circle_outline),),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
                     ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(10),
-                        onTap: (){},
-                      ),
-                    )
                   ],
                 ),
               );

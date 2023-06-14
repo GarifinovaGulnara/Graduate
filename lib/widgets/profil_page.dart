@@ -7,7 +7,7 @@ class ProfilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: signup_bg,
       body: Center(
         child: Column(
           children: [
@@ -15,6 +15,10 @@ class ProfilPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             Image.asset("assets/logo.png"),
+            const Padding(
+              padding: EdgeInsets.all(10),
+              child: Text('Surname Name', style: TextStyle(color: Colors.white, fontSize: 18),),
+            ),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(10),
@@ -43,7 +47,7 @@ class ProfilPage extends StatelessWidget {
                     children: const [
                       Icon(Icons.favorite), 
                       SizedBox(width: 10,), 
-                      Text('my')],),
+                      Text('Избранное')],),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(login_bg)),
                       ),
                       ),
@@ -56,9 +60,9 @@ class ProfilPage extends StatelessWidget {
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(login_bg)), 
                   child: Row(
                     children: const [
-                      Icon(Icons.favorite),
+                      Icon(Icons.library_books_outlined),
                       SizedBox(width: 10,), 
-                      Text('my')],),
+                      Text('Мои заказы')],),
                       ),
                       ),
                   ],

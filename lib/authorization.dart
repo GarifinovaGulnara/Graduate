@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
 import 'package:graduate_work/widgets/login_form.dart';
 import 'package:graduate_work/widgets/logup_form.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class AuthorizationPage extends StatefulWidget {
@@ -108,9 +107,7 @@ class _AuthorizationPageState extends State<AuthorizationPage>
                     onTap: (){
                       if (_isShowSignUp){
                         updateView();
-                      } else{
-                        
-                      }
+                      } else{}
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: defpaultPadding * 0.75),

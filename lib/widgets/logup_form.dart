@@ -14,9 +14,9 @@ class LogupForm extends StatefulWidget {
 
 class _LogupFormState extends State<LogupForm> {
 
-  String name = '';
-  String login = '';
-  String pass = '';
+  final controllerName = TextEditingController();
+  final controllerPhone = TextEditingController();
+  final controllerPass = TextEditingController();
 
 
   void initFirebase() async{
@@ -38,30 +38,34 @@ class _LogupFormState extends State<LogupForm> {
           children: [
             const Spacer(),
             TextFormField(
+              controller: controllerName,
+              keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(
-                  hintText: "Фамилия Имя Отчество",
+                  hintText: "Фамилия Имя",
               ),
-              onChanged: (value) => name = value,
+              //onChanged: (value) => name = value,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: defpaultPadding),
               child: TextFormField(
+                controller: controllerPhone,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   hintText: "Телефон",
                 ),
-              onChanged: (value) => login = value,
               ),
             ),
             TextFormField(
+              controller: controllerPass,
               obscureText: true,
               decoration: const InputDecoration(
                 hintText: "Пароль",
               ),
-              onChanged: (value) => pass = value,
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
             OutlinedButton(onPressed: (){
-              FirebaseFirestore.instance.collection('Users').add({'Name': name, 'Login': login, 'Password': pass});
+              FirebaseFirestore.instance.collection('Users').add({'Name': controllerName.text, 'Login': controllerPhone.text, 'Password': controllerPass.text});
             }, 
               child: const Text('Зарегистрироваться'), 
               style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),),
