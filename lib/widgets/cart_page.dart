@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:graduate_work/constants.dart';
 
 class CartPage extends StatefulWidget {
@@ -11,118 +11,150 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage>{
 
+int count = 1;
   void onPayTap(){
-    Navigator.pushNamed(context, '/catalog_page/cart_page/payment_page');
+    Navigator.pushNamed(context, '/auth/catalog_page/cart_page/payment_page');
   }
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ListView.builder(
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.18),
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              itemCount: 5,
-              itemExtent: 100,
-              itemBuilder: (BuildContext context, int index){
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                          border: Border.all(color: Colors.black.withOpacity(0.2)),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          )]
-                      ),
-                      clipBehavior: Clip.hardEdge,
-                      child:  Row(
+    return Scaffold(
+      backgroundColor: signup_bg,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: StreamBuilder<Object>(
+              stream: FirebaseFirestore.instance.collection('Cart').snapshots(),
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if(snapshot.data == null){
+                      return const CircularProgressIndicator();
+                    }
+                else{
+                  var listcart = snapshot.data.docs;
+                  return ListView.builder(
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.18),
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (BuildContext context, int index){
+                      if(!snapshot.hasData){
+                        return const Center(
+                            child: Text('Нет данных'),
+                          );
+                      }else{
+                        return Card(
+                        child: Stack(
                           children: [
-                            Image.asset("assets/logo.png"),
-                            const SizedBox(width: 15,),
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: const [
-                                      SizedBox(height: 10),
-                                  Text('Name', maxLines: 1, overflow: TextOverflow.ellipsis,),
-                                  SizedBox(height: 5,),
-                                  Text('Des', style: TextStyle(color: Colors.grey, fontSize: 12), maxLines: 2, overflow: TextOverflow.ellipsis,),
-                                  Text('Price', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      IconButton(onPressed: (){}, icon: const Icon(Icons.remove_circle_outline),),
-                                      const Text('Count'),
-                                      IconButton(onPressed: (){}, icon: const Icon(Icons.add_circle_outline),),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                            Column(
+                              children: [
+                                SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.15,
+                                    child: Image.asset("assets/logo.png")),
+                                ListTile(
+                                  title: Text(
+                                        listcart[index]['idprod'],
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                  subtitle: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            '${listcart[index]['totalsum']} P',
+                                            style: const TextStyle(
+                                                color: btn_color,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: MediaQuery.of(context).size.height * 0.01,
+                                          ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context).size.width * 0.1,
+                                          ),
+                                              /* Padding(
+                                                padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        IconButton(onPressed: (){
+                                                          print('minus');
+                                                        }, icon: const Icon(Icons.remove_circle_outline),),
+                                                        Text('${listcart[index]['count']}'),
+                                                        IconButton(onPressed: (){
+                                                          print('plus');
+                                                        }, icon: const Icon(Icons.add_circle_outline),),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 25,
+                                                      child: OutlinedButton(onPressed: (){}, child: const Text('Подробнее'), style: ButtonStyle(foregroundColor: MaterialStateProperty.all(btn_color)),))
+                                                  ],
+                                                ),
+                                              ), */
+                                      ],
+                                    ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                    ),
-                  ],
-                ),
-              );
-            },
+                      );
+                      }
+                    },
+                    );
+                }
+              }
             ),
-            Expanded(
-              child: Column(children: [
-                Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.67),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 140,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: const [
-                              Text('Всего товаров:'),
-                              Text('fhanfakhv'),
-                            ],
-                          ),
-                          const SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: const [
-                              Text('Общая сумма:'),
-                              Text('fhanfakhv'),
-                            ],
-                          ),
-                          const SizedBox(height: 10,),
-                          SizedBox(
-                height: 40,
-                width: 180,
-                child: ElevatedButton(
-                  onPressed: onPayTap, 
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(btn_color),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
-                  child: const Text('Оплатить'),))
-                        ],
-                      ),),
-                    ),
-                )
-              ]),
-            ),
-      ],
+          ),
+              /* Expanded(
+                child: Column(children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.67),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          children: [
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text('Всего товаров:'),
+                                Text('5'),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text('Общая сумма:'),
+                                Text('1200 руб.'),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            SizedBox(
+                  height: 40,
+                  width: 180,
+                  child: ElevatedButton(
+                    onPressed: onPayTap, 
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(btn_color),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
+                    child: const Text('Оформить заказ'),))
+                          ],
+                        ),),
+                      ),
+                  )
+                ]),
+              ), */
+        ],
+      ),
     );
   }
 }

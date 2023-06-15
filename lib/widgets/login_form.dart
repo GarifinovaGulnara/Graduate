@@ -46,7 +46,7 @@ class _LoginFormState extends State<LoginForm> {
             OutlinedButton(onPressed: () async {
               if(await UserExist()){
                 state = false;
-                Navigator.of(context).pushReplacementNamed('/catalog_page');
+                Navigator.of(context).pushReplacementNamed('catalog_page');
               }
               else{
                 setState(() {
@@ -68,8 +68,8 @@ class _LoginFormState extends State<LoginForm> {
     var querySnapshot = await collection.get();
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var phone = data['Login'];
-      var pass = data['Password'];
+      var phone = data['login'];
+      var pass = data['password'];
       if(phone == controllerPhone.text)
       {
         if(pass == controllerPass.text)

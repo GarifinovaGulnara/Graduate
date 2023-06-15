@@ -1,24 +1,20 @@
 // ignore_for_file: must_be_immutable, non_constant_identifier_names
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
-import 'package:graduate_work/widgets/favorite_list.dart';
 
-class ProductDetails extends StatefulWidget {
+class UnauthProductDetailsWidget extends StatefulWidget {
   String? id_prod;
   String? name;
   int? price;
   String? des;
 
-  ProductDetails({Key? key, this.name, this.des, this.id_prod, this.price}) : super(key: key);
+  UnauthProductDetailsWidget({Key? key, this.name, this.des, this.id_prod, this.price}) : super(key: key);
   
   @override
-  _ProductDetailsState createState() => _ProductDetailsState();
+  _UnauthProductDetailsWidget createState() => _UnauthProductDetailsWidget();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
-  Color _favIcon = login_bg;
+class _UnauthProductDetailsWidget extends State<UnauthProductDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,14 +22,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       appBar: AppBar(
         elevation: 0,
         foregroundColor: login_bg,
-        backgroundColor: Colors.transparent,
-        actions: [IconButton(color: _favIcon,
-          onPressed: (){
-          FirebaseFirestore.instance.collection('FavoriteProd').add({'idprod': widget.id_prod, 'iduser': 1});
-          setState(() {
-            _favIcon = Colors.red;
-          });
-        }, icon: Icon(Icons.favorite))],),
+        backgroundColor: Colors.transparent,),
       body: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
@@ -51,12 +40,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Row(
                   children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.63,
+                    width: MediaQuery.of(context).size.width * 0.64,
                     child: Text('${widget.name}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
                   SizedBox(
-                    height: MediaQuery.of(context).size.width * 0.1,
+                    height: MediaQuery.of(context).size.width * 0.2,
                     width: MediaQuery.of(context).size.width * 0.06,
-                    child: const Text('|', style: TextStyle(fontSize: 36),),),
+                    child: const Text('|', style: TextStyle(fontSize: 48),),),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.2,
                     child: Text('${widget.price} P', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
@@ -70,13 +59,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: (){
-                    FirebaseFirestore.instance.collection('Cart').add({'count': 1, 'totalsum': widget.price, 'idprod': widget.id_prod, 'iduser': 1});
+                    Navigator.of(context).pushNamed('/auth');
                   }, 
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(btn_color),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
                   ),
-                  child: const Text('Добавить в корзину'),))
+                  child: const Text('Авторизоваться'),))
               ]
               ),
             ),

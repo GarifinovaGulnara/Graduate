@@ -10,7 +10,7 @@ class MastersList extends StatefulWidget {
 class _MastersListWidgetState extends State<MastersList> {
   
   void onMasDetailTap(){
-    Navigator.of(context).pushNamed('');
+    Navigator.of(context).pushNamed('/catalog_page/masters_list/masters_class_details');
   }
 
   @override
@@ -43,10 +43,10 @@ class _MastersListWidgetState extends State<MastersList> {
                       children: [
                         Image.asset("assets/logo.png"),
                         const SizedBox(width: 15,),
-                        Expanded(
+                        const Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               SizedBox(height: 10),
                               Text('Name', maxLines: 1, overflow: TextOverflow.ellipsis,),
                               SizedBox(height: 5,),

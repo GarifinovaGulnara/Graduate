@@ -17,7 +17,7 @@ class _MastersClassDetailsState extends State<MastersClassDetails> {
         elevation: 0,
         foregroundColor: Colors.black,
         backgroundColor: Colors.transparent,
-        actions: [IconButton(onPressed: (){}, icon: const Icon(Icons.favorite))],),
+        ),
       body: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
@@ -32,11 +32,10 @@ class _MastersClassDetailsState extends State<MastersClassDetails> {
             ),
             child: SingleChildScrollView(
               child: Column(children: [
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                   Expanded(
-                    child: Text('Name Product', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),)),
-                  Text('Price', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                    child: Text('Name мастер-класса', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),)),
                 ],),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -51,7 +50,7 @@ class _MastersClassDetailsState extends State<MastersClassDetails> {
                     backgroundColor: MaterialStateProperty.all(btn_color),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
                   ),
-                  child: const Text('Add in Cart'),))
+                  child: const Text('Добавить в избранное (мастер-классы)',),))
               ]
               ),
             ),
