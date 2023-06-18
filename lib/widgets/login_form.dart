@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
 
+import '../main.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({
     Key? key,
@@ -74,10 +76,12 @@ class _LoginFormState extends State<LoginForm> {
       {
         if(pass == controllerPass.text)
         {
+          MyApp.UserName = data['name'];
           return true;
         }
       }
     }
+
     return false;
   }
 }

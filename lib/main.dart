@@ -15,6 +15,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  static String UserName = '';
   const MyApp({super.key});
 
   @override
