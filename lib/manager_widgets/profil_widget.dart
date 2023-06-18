@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
-import 'package:graduate_work/main.dart';
 
-class ProfilPage extends StatelessWidget {
-  const ProfilPage({Key? key}) : super(key: key);
+class ProfilWidget extends StatelessWidget {
+  const ProfilWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +11,6 @@ class ProfilPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Image.asset("assets/logo.png"),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(MyApp.UserName, style: const TextStyle(color: Colors.white, fontSize: 18),),
             const Padding(
               padding: EdgeInsets.all(10),
               child: Text('Гарифинова Гульнара', style: TextStyle(color: Colors.white, fontSize: 18),),
@@ -53,26 +45,11 @@ class ProfilPage extends StatelessWidget {
                     children: [
                       Icon(Icons.library_books_outlined), 
                       SizedBox(width: 10,), 
-                      Text('Мои заказы')],),
+                      Text('Заказы')],),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(login_bg)),
                       ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.05,
-                child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.of(context).pushNamed('catalog_page/profil_page/favorite_list');
-                  },
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(login_bg)), 
-                  child: const Row(
-                    children: [
-                      Icon(Icons.favorite),
-                      SizedBox(width: 10,), 
-                      Text('Избранное')],),
-                      ),
-                      ),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
                       SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,

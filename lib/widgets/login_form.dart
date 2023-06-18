@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
             OutlinedButton(onPressed: () async {
               if(await UserExist()){
                 state = false;
-                Navigator.of(context).pushReplacementNamed('/catalog_page');
+                Navigator.of(context).pushReplacementNamed('catalog_page');
               }
               else{
                 setState(() {

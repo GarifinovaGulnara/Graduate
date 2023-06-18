@@ -98,7 +98,7 @@ class _AuthorizationPageState extends State<AuthorizationPage>
                 style: TextStyle(
                   fontSize: _isShowSignUp ? 14 : 20,
                 fontWeight: FontWeight.bold,
-                color: _isShowSignUp ? Colors.white : Colors.white10,
+                color: _isShowSignUp ? Colors.white : Colors.transparent,
             ),
                 child: Transform.rotate(
                   angle: -_animationTextRotate.value * pi / 180,
@@ -128,7 +128,7 @@ class _AuthorizationPageState extends State<AuthorizationPage>
                 style: TextStyle(
                   fontSize: !_isShowSignUp ? 14 : 20,
                 fontWeight: FontWeight.bold,
-                color: _isShowSignUp ? Colors.white10 : Colors.white,
+                color: _isShowSignUp ? Colors.transparent : Colors.white,
             ),
                 child: Transform.rotate(
                   angle: (90 - _animationTextRotate.value) * pi / 180,

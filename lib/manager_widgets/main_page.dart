@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
-import 'package:graduate_work/widgets/cart_page.dart';
 import 'package:graduate_work/widgets/list_cards_categories.dart';
-import 'package:graduate_work/widgets/masters_list..dart';
 import 'package:graduate_work/widgets/profil_page.dart';
 
-class CatalogPage extends StatefulWidget {
-  const CatalogPage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<CatalogPage> createState() => _CatalogPageState();
+  State<MainPage> createState() => _MainPage();
 }
 
-class _CatalogPageState extends State<CatalogPage> {
+class _MainPage extends State<MainPage> {
   int _selectedPage = 0;
   final _widgetOptions = <Widget>[
     const CardsList(),
-    const MastersList(),
-    const CartPage(),
     const ProfilPage(),
   ];
   void onSelectedPage(int index) {
@@ -40,9 +36,7 @@ class _CatalogPageState extends State<CatalogPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPage,
         items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.palette), label: 'Товары'),
-        BottomNavigationBarItem(icon: Icon(Icons.photo_camera_back), label: 'Мастер-классы'),
-        BottomNavigationBarItem(icon: Icon(Icons.shopping_basket), label: 'Корзина'),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
         BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Профиль'),
       ],
       onTap: onSelectedPage,

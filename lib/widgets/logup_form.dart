@@ -18,6 +18,10 @@ class _LogupFormState extends State<LogupForm> {
   final controllerPhone = TextEditingController();
   final controllerPass = TextEditingController();
 
+  void onTapPhoneForm()
+  {
+    controllerPhone.text = '8';
+  }
 
   void initFirebase() async{
     WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +53,9 @@ class _LogupFormState extends State<LogupForm> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: defpaultPadding),
               child: TextFormField(
+                onTap: onTapPhoneForm,
                 controller: controllerPhone,
+                maxLength: 11,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   hintText: "Телефон",
@@ -65,7 +71,7 @@ class _LogupFormState extends State<LogupForm> {
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
             OutlinedButton(onPressed: (){
-              FirebaseFirestore.instance.collection('Users').add({'Name': controllerName.text, 'Login': controllerPhone.text, 'Password': controllerPass.text});
+              FirebaseFirestore.instance.collection('Users').add({'name': controllerName.text, 'login': controllerPhone.text, 'password': controllerPass.text, 'is_admin': false});
             }, 
               child: const Text('Зарегистрироваться'), 
               style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),),
