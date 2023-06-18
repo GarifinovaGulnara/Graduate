@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
-import 'package:graduate_work/widgets/favorite_list.dart';
 
 class ProductDetails extends StatefulWidget {
   String? id_prod;
@@ -33,7 +32,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           setState(() {
             _favIcon = Colors.red;
           });
-        }, icon: Icon(Icons.favorite))],),
+        }, icon: const Icon(Icons.favorite))],),
       body: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.02,),

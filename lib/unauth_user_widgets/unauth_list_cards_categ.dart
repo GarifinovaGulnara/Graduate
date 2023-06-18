@@ -49,7 +49,7 @@ class _UnauthCardsListWidget extends State<UnauthCardsListWidget> {
                                                   padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
                                                   child: SizedBox(
                                                     height: MediaQuery.of(context).size.height * 0.14,
-                                                    child: Image.network(docs[index]['img'])),
+                                                    child: Image.asset("assets/logo.png")),
                                                 ),
                                                 Text(docs[index]['name'], style: const TextStyle(color: login_bg, fontWeight: FontWeight.bold),),
                                               ],

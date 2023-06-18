@@ -36,7 +36,7 @@ class _UnauthProductListWidget extends State<UnauthProductListWidget> {
                       FirebaseFirestore.instance.collection('Products').snapshots(),
                   builder: (context, AsyncSnapshot<dynamic> snapshot) {
                     if(snapshot.data == null){
-                      return Center(child: const CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     else{
                        var listProd = snapshot.data.docs.where((x)=>x['idcat']==widget.id_cat).toList();

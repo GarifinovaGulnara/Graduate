@@ -71,9 +71,9 @@ int count = 1;
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          Text(
+                                          const Text(
                                             'Заказ собирается',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),
                                           ),

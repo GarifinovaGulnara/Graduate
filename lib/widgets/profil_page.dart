@@ -11,13 +11,9 @@ class ProfilPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Image.asset("assets/logo.png"),
             const Padding(
               padding: EdgeInsets.all(10),
-              child: Text('Surname Name', style: TextStyle(color: Colors.white, fontSize: 18),),
+              child: Text('Гарифинова Гульнара', style: TextStyle(color: Colors.white, fontSize: 18),),
             ),
             Expanded(
               child: Container(
@@ -69,20 +65,6 @@ class ProfilPage extends StatelessWidget {
                       Text('Избранное')],),
                       ),
                       ),
-                      /* SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
-                      SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.05,
-                child: ElevatedButton(
-                  onPressed: (){},
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(login_bg)), 
-                  child: const Row(
-                    children: [
-                      Icon(Icons.edit),
-                      SizedBox(width: 10,), 
-                      Text('Редактировать профиль')],),
-                      ),
-                      ), */
                       SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
                       SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,

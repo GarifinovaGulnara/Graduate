@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
-import 'package:graduate_work/prod_details.dart';
+import 'package:graduate_work/widgets/prod_details.dart';
 
 class ProductListWidget extends StatefulWidget {
   dynamic id_cat;
