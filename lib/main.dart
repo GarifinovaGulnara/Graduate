@@ -13,6 +13,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static String UserName = '';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

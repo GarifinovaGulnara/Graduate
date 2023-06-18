@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
+import 'package:graduate_work/main.dart';
 
 class ProfilPage extends StatelessWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -15,9 +16,9 @@ class ProfilPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             Image.asset("assets/logo.png"),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text('Surname Name', style: TextStyle(color: Colors.white, fontSize: 18),),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(MyApp.UserName, style: const TextStyle(color: Colors.white, fontSize: 18),),
             ),
             Expanded(
               child: Container(

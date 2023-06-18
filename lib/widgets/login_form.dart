@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
 
+import '../main.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({
     Key? key,
@@ -68,16 +70,18 @@ class _LoginFormState extends State<LoginForm> {
     var querySnapshot = await collection.get();
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var phone = data['Login'];
-      var pass = data['Password'];
+      var phone = data['login'];
+      var pass = data['password'];
       if(phone == controllerPhone.text)
       {
         if(pass == controllerPass.text)
         {
+          MyApp.UserName = data['name'];
           return true;
         }
       }
     }
+
     return false;
   }
 }
