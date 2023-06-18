@@ -69,7 +69,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: (){
-                    FirebaseFirestore.instance.collection('Cart').add({'count': 1, 'totalsum': widget.price, 'idprod': widget.id_prod, 'iduser': 1});
+                    FirebaseFirestore.instance.collection('Cart').add({'totalsum': widget.price, 'idprod': widget.id_prod, 'iduser': 1});
                   }, 
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(btn_color),

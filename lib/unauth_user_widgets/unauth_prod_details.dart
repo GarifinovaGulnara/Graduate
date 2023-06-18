@@ -7,8 +7,9 @@ class UnauthProductDetailsWidget extends StatefulWidget {
   String? name;
   int? price;
   String? des;
+  String? img;
 
-  UnauthProductDetailsWidget({Key? key, this.name, this.des, this.id_prod, this.price}) : super(key: key);
+  UnauthProductDetailsWidget({Key? key, this.name, this.des, this.id_prod, this.price, this.img}) : super(key: key);
   
   @override
   _UnauthProductDetailsWidget createState() => _UnauthProductDetailsWidget();
@@ -18,7 +19,7 @@ class _UnauthProductDetailsWidget extends State<UnauthProductDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(234, 253, 251, 251),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         foregroundColor: login_bg,
@@ -26,13 +27,13 @@ class _UnauthProductDetailsWidget extends State<UnauthProductDetailsWidget> {
       body: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
-          Image.asset("assets/logo.png", height: MediaQuery.of(context).size.height * 0.3, fit: BoxFit.cover,),
+          Image.network('${widget.img}', height: MediaQuery.of(context).size.height * 0.3, fit: BoxFit.cover,),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
               borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
             ),
             child: SingleChildScrollView(

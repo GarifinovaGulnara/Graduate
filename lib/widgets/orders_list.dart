@@ -36,12 +36,13 @@ int count = 1;
                       return const CircularProgressIndicator();
                     }
                 else{
-                  var listcart = snapshot.data.docs;
+                  
                   return ListView.builder(
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.18),
                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (BuildContext context, int index){
+                        var listcart = snapshot.data.docs[index];
                       if(!snapshot.hasData){
                         return const Center(
                             child: Text('Нет данных'),
@@ -57,7 +58,7 @@ int count = 1;
                                     child: Image.asset("assets/logo.png")),
                                 ListTile(
                                   title: Text(
-                                        listcart[index]['idprod'],
+                                        listcart['idprod'],
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -66,7 +67,7 @@ int count = 1;
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                            '${listcart[index]['totalsum']} P',
+                                            '${listcart['totalsum']} P',
                                             style: const TextStyle(
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),

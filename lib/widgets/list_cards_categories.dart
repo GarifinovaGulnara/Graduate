@@ -22,47 +22,40 @@ class _CardsList extends State<CardsList> {
             stream: _categStream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var docs = snapshot.data!.docs;
-                return ListView.builder(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    itemExtent: MediaQuery.of(context).size.height * 0.25,
-                    itemCount: docs.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return Stack(
-                        children: [
-                          Center(
-                            child: SizedBox(
-                              
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: Card(
-                                clipBehavior: Clip.hardEdge,
-                                child: Expanded(
-                                  child: InkWell(
-                                    onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => ProductListWidget(id_cat: docs[index].id,))),
-                                    child: Column(
+                return Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (BuildContext context, index) {
+                          var docs = snapshot.data!.docs[index];
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.width * 0.45,
+                                child: Card(
+                                  child: ListTile(
+                                    onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => ProductListWidget(id_cat: docs.id,))),
+                                    title: Column(
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
-                                          child: SizedBox(
-                                            height: MediaQuery.of(context).size.height * 0.14,
-                                            child: Image.asset("assets/logo.png")),
-                                        ),
-                                        Center(
-                                          child: ListTile(
-                                            title: Text(docs[index]['name'], style: const TextStyle(color: login_bg, fontWeight: FontWeight.bold),),
-                                          ),
-                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context).size.height * 0.14,
+                                          child: Image.network(docs['img'])),
+                                        Text(docs['name'], style: const TextStyle(color: login_bg, fontWeight: FontWeight.bold),),
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      );
-                    });
+                            ],
+                          );
+                        }),
+                  ),
+                );
               }
               return const Text('Загрузка данных');
             }),

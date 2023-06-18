@@ -9,14 +9,90 @@ class CartPage extends StatefulWidget {
   State<CartPage> createState() => _CartPageState();
 }
 
+class newClass
+{
+  late String idItem;
+  late String name;
+
+  newClass(String x, String y) {
+    // See initializing formal parameters for a better way
+    // to initialize instance variables.
+    idItem = x;
+    name = y;
+  }
+}
+
 class _CartPageState extends State<CartPage>{
 
-int count = 1;
+Future<void> TakeUp()
+async {
+    var collection = FirebaseFirestore.instance.collection('Cart');
+    var querySnapshot = await collection.get();
+    countItem = querySnapshot.docs.length;
+    setState(() {
+          
+    });
+}
+
+Future<void> TakeTotalSum()
+async {
+    var collection = FirebaseFirestore.instance.collection('Cart');
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+      var sum = data['totalsum'].toString();
+      totalsum += int.parse(sum);
+    }
+    setState(() {
+          
+    });
+}
+
+Future<void> TakeNameProduct()
+async {
+    var collection = FirebaseFirestore.instance.collection('Products');
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+      var idItem = queryDocumentSnapshot.id;
+      var name = data['name'].toString();
+      // if (idItem == id){
+        itemName.add(newClass(idItem, name));
+      //   break;
+      // }
+    }
+}
+
+String GetProfuctName(String id)
+{
+  for (var item in itemName) {
+    if(item.idItem == id)
+      {
+        return item.name;
+      }
+  }
+
+  return 'не нашлась ${id}';
+}
+
+@override
+void initState() {
+    TakeNameProduct();
+    // TODO: implement initState
+    super.initState();
+    TakeUp();
+    TakeTotalSum();
+  }
+
+List<newClass> itemName = []; 
+int countItem = 0; 
+int totalsum = 0; 
   void onPayTap(){
     Navigator.pushNamed(context, '/auth/catalog_page/cart_page/payment_page');
   }
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: signup_bg,
       body: Stack(
@@ -30,12 +106,14 @@ int count = 1;
                       return const CircularProgressIndicator();
                     }
                 else{
-                  var listcart = snapshot.data.docs;
+                  // TakeNameProduct();
+
                   return ListView.builder(
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.18),
                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (BuildContext context, int index){
+                        var listcart = snapshot.data.docs[index];
                       if(!snapshot.hasData){
                         return const Center(
                             child: Text('Нет данных'),
@@ -48,10 +126,11 @@ int count = 1;
                               children: [
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.15,
-                                    child: Image.asset("assets/logo.png")),
+                                    //child: Image.network(listcart['img'])
+                                    ),
                                 ListTile(
                                   title: Text(
-                                        listcart[index]['idprod'],
+                                        GetProfuctName(listcart['idprod']),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -60,7 +139,7 @@ int count = 1;
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                            '${listcart[index]['totalsum']} P',
+                                            '${listcart['totalsum']} P',
                                             style: const TextStyle(
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),
@@ -71,27 +150,6 @@ int count = 1;
                                           SizedBox(
                                             width: MediaQuery.of(context).size.width * 0.1,
                                           ),
-                                              /* Padding(
-                                                padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        IconButton(onPressed: (){
-                                                          print('minus');
-                                                        }, icon: const Icon(Icons.remove_circle_outline),),
-                                                        Text('${listcart[index]['count']}'),
-                                                        IconButton(onPressed: (){
-                                                          print('plus');
-                                                        }, icon: const Icon(Icons.add_circle_outline),),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 25,
-                                                      child: OutlinedButton(onPressed: (){}, child: const Text('Подробнее'), style: ButtonStyle(foregroundColor: MaterialStateProperty.all(btn_color)),))
-                                                  ],
-                                                ),
-                                              ), */
                                       ],
                                     ),
                                 ),
@@ -107,13 +165,13 @@ int count = 1;
               }
             ),
           ),
-              /* Expanded(
+              Expanded(
                 child: Column(children: [
                   Padding(
                     padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.67),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 140,
+                      height: MediaQuery.of(context).size.height * 0.3,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -122,19 +180,19 @@ int count = 1;
                         padding: const EdgeInsets.all(15),
                         child: Column(
                           children: [
-                            const Row(
+                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text('Всего товаров:'),
-                                Text('5'),
+                                Text('${countItem}'),
                               ],
                             ),
                             const SizedBox(height: 10,),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text('Общая сумма:'),
-                                Text('1200 руб.'),
+                                Text('${totalsum} руб.'),
                               ],
                             ),
                             const SizedBox(height: 10,),
@@ -152,7 +210,7 @@ int count = 1;
                       ),
                   )
                 ]),
-              ), */
+              ),
         ],
       ),
     );
