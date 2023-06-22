@@ -9,6 +9,7 @@ class LoginForm extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
+
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
@@ -16,6 +17,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
 
   bool state = false;
+  bool ismanager = false;
   final controllerPhone = TextEditingController();
   final controllerPass = TextEditingController();
 
@@ -48,7 +50,12 @@ class _LoginFormState extends State<LoginForm> {
             OutlinedButton(onPressed: () async {
               if(await UserExist()){
                 state = false;
-                Navigator.of(context).pushReplacementNamed('catalog_page');
+                if(ismanager == false){
+                  Navigator.of(context).pushReplacementNamed('catalog_page');
+                }
+                else{
+                  Navigator.of(context).pushReplacementNamed('/main_page');
+                }
               }
               else{
                 setState(() {
@@ -72,11 +79,13 @@ class _LoginFormState extends State<LoginForm> {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       var phone = data['login'];
       var pass = data['password'];
+      ismanager = data['is_manager'];
       if(phone == controllerPhone.text)
       {
         if(pass == controllerPass.text)
         {
-          MyApp.UserName = data['name'];
+          MyApp.userName = data['name'];
+          MyApp.idUser = queryDocumentSnapshot.id;
           return true;
         }
       }

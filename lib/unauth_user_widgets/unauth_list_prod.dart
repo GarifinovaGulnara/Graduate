@@ -80,7 +80,7 @@ class _UnauthProductListWidget extends State<UnauthProductListWidget> {
                       } else{
                         return Card(
                         child: InkWell(
-                          onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => UnauthProductDetailsWidget(id_prod: docs['idprod'], name: docs['name'], des: docs['description'], price: docs['price'], img: docs['img'],))),
+                          onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => UnauthProductDetailsWidget(id_prod: docs.id, name: docs['name'], des: docs['description'], price: docs['price'], img: docs['img'],))),
                           child: Column(
                             children: [
                               SizedBox(

@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
+import 'package:graduate_work/main.dart';
+import 'package:graduate_work/widgets/payment_page.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -13,12 +16,12 @@ class newClass
 {
   late String idItem;
   late String name;
+  late String img;
 
-  newClass(String x, String y) {
-    // See initializing formal parameters for a better way
-    // to initialize instance variables.
+  newClass(String x, String y, String z) {
     idItem = x;
     name = y;
+    img = z;
   }
 }
 
@@ -28,7 +31,8 @@ Future<void> TakeUp()
 async {
     var collection = FirebaseFirestore.instance.collection('Cart');
     var querySnapshot = await collection.get();
-    countItem = querySnapshot.docs.length;
+    var list = querySnapshot.docs.where((x)=>x['iduser']== MyApp.idUser ? true : false).toList();
+    countItem = list.length;
     setState(() {
           
     });
@@ -38,11 +42,20 @@ Future<void> TakeTotalSum()
 async {
     var collection = FirebaseFirestore.instance.collection('Cart');
     var querySnapshot = await collection.get();
-    for (var queryDocumentSnapshot in querySnapshot.docs) {
+    var list = querySnapshot.docs.where((x)=>x['iduser']== MyApp.idUser ? true : false).toList();
+    for (var queryDocumentSnapshot in list) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       var sum = data['totalsum'].toString();
       totalsum += int.parse(sum);
     }
+    setState(() {
+          
+    });
+}
+
+Future<void> MinusTotalSum(int sum)
+async {
+    totalsum -= sum;
     setState(() {
           
     });
@@ -56,10 +69,8 @@ async {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       var idItem = queryDocumentSnapshot.id;
       var name = data['name'].toString();
-      // if (idItem == id){
-        itemName.add(newClass(idItem, name));
-      //   break;
-      // }
+      var img = data['img'].toString();
+        itemName.add(newClass(idItem, name, img));
     }
 }
 
@@ -71,14 +82,12 @@ String GetProfuctName(String id)
         return item.name;
       }
   }
-
   return 'не нашлась ${id}';
 }
 
 @override
 void initState() {
     TakeNameProduct();
-    // TODO: implement initState
     super.initState();
     TakeUp();
     TakeTotalSum();
@@ -87,9 +96,7 @@ void initState() {
 List<newClass> itemName = []; 
 int countItem = 0; 
 int totalsum = 0; 
-  void onPayTap(){
-    Navigator.pushNamed(context, '/auth/catalog_page/cart_page/payment_page');
-  }
+String idcart = '';
   @override
   Widget build(BuildContext context) {
     
@@ -106,14 +113,15 @@ int totalsum = 0;
                       return const CircularProgressIndicator();
                     }
                 else{
-                  // TakeNameProduct();
-
+                  var list = snapshot.data.docs.where((x)=>x['iduser']== MyApp.idUser ? true : false).toList();
                   return ListView.builder(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.18),
+                    physics: const BouncingScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.2),
                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                      itemCount: snapshot.data.docs.length,
+                      itemCount: list.length,
                       itemBuilder: (BuildContext context, int index){
-                        var listcart = snapshot.data.docs[index];
+                        var listcart = list[index];
+                        idcart = listcart.id;
                       if(!snapshot.hasData){
                         return const Center(
                             child: Text('Нет данных'),
@@ -122,38 +130,58 @@ int totalsum = 0;
                         return Card(
                         child: Stack(
                           children: [
-                            Column(
-                              children: [
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.15,
-                                    //child: Image.network(listcart['img'])
-                                    ),
-                                ListTile(
-                                  title: Text(
-                                        GetProfuctName(listcart['idprod']),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                  subtitle: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                            '${listcart['totalsum']} P',
-                                            style: const TextStyle(
-                                                color: btn_color,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
-                                            height: MediaQuery.of(context).size.height * 0.01,
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context).size.width * 0.1,
-                                          ),
+                            ListTile(
+                              onTap: () {
+                                showDialog(context: context, builder: (context) {
+                                  return AlertDialog(
+                                      title: const Text('Вы действительно хотите удалить товар?', style: TextStyle(color: login_bg),),
+                                      actions: [
+                                        ElevatedButton(onPressed: (){
+                                          Navigator.of(context).pop();
+                                        }, child: const Text('Нет'), style: ButtonStyle(backgroundColor: MaterialStateProperty.all(btn_color)),),
+                                        SizedBox( width: MediaQuery.of(context).size.width * 0.04,),
+                                        OutlinedButton(onPressed: (){
+                                          FirebaseFirestore.instance.collection('Cart').doc(listcart.id).delete();
+                                          TakeUp();
+                                          MinusTotalSum(listcart['totalsum']);
+                                          Navigator.of(context).pop();
+                                        }, 
+                                        child: const Text('Да'), style: ButtonStyle(foregroundColor: MaterialStateProperty.all(login_bg))),
                                       ],
-                                    ),
+                                    );
+                                });
+                              },
+                              title: Column(
+                                children: [
+                                  SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.03,
+                                //child: Image.network('img')
                                 ),
-                              ],
+                               Text(
+                                    GetProfuctName(listcart['idprod']),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                        '${listcart['totalsum']} P',
+                                        style: const TextStyle(
+                                            color: btn_color,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: MediaQuery.of(context).size.height * 0.01,
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.1,
+                                      ),
+                                  ],
+                                ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -168,10 +196,10 @@ int totalsum = 0;
               Expanded(
                 child: Column(children: [
                   Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.67),
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.65),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.17,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -183,7 +211,7 @@ int totalsum = 0;
                              Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text('Всего товаров:'),
+                                const Text('Всего товаров:'),
                                 Text('${countItem}'),
                               ],
                             ),
@@ -191,8 +219,8 @@ int totalsum = 0;
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text('Общая сумма:'),
-                                Text('${totalsum} руб.'),
+                                const Text('Общая сумма:'),
+                                Text('${totalsum} рублей'),
                               ],
                             ),
                             const SizedBox(height: 10,),
@@ -200,7 +228,9 @@ int totalsum = 0;
                   height: 40,
                   width: 180,
                   child: ElevatedButton(
-                    onPressed: onPayTap, 
+                    onPressed: (){
+                       Navigator.push(context, CupertinoPageRoute(builder: (context) => PaymentPage(id_cart: idcart, countProd: countItem, totalsum: totalsum, )));
+                    }, 
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(btn_color),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),

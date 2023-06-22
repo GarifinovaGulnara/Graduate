@@ -27,18 +27,19 @@ int count = 1;
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<Object>(
-              stream: FirebaseFirestore.instance.collection('Cart').snapshots(),
+              stream: FirebaseFirestore.instance.collection('Order').snapshots(),
               builder: (context, AsyncSnapshot<dynamic> snapshot) {
                 if(snapshot.data == null){
                       return const CircularProgressIndicator();
                     }
                 else{
-                  var listcart = snapshot.data.docs;
+                  
                   return ListView.builder(
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.18),
                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                      itemCount: listcart.length,
+                      itemCount: snapshot.data.docs.length,
                       itemBuilder: (BuildContext context, int index){
+                        var listcart = snapshot.data!.docs[index];
                       if(!snapshot.hasData){
                         return const Center(
                             child: Text('Нет данных'),
@@ -49,12 +50,38 @@ int count = 1;
                           children: [
                             Column(
                               children: [
-                                SizedBox(
+                                /* SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.15,
-                                    child: Image.asset("assets/logo.png")),
+                                    child: Image.asset("assets/logo.png")), */
                                 ListTile(
+                                  onTap: () {
+                                showDialog(context: context, builder: (context) {
+                                  return Container(
+                                    child: AlertDialog(
+                                      title: const Text('Изменить статус заказа', style: TextStyle(color: login_bg),),
+                                      actions: [
+                                        Column(
+
+                                          children: [
+                                            OutlinedButton(onPressed: (){
+                                              FirebaseFirestore.instance.collection('Order').doc(listcart.id).update({"status": "Собирается"});
+                                          Navigator.of(context).pop();
+                                        }, child: const Text('Собирается'),),
+                                        SizedBox( width: MediaQuery.of(context).size.width * 0.04,),
+                                        OutlinedButton(onPressed: (){
+                                          FirebaseFirestore.instance.collection('Order').doc(listcart.id).update({"status": "Можно забирать"});
+                                          Navigator.of(context).pop();
+                                        }, 
+                                        child: const Text('Можно забирать')),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                              },
                                   title: Text(
-                                        listcart[index]['idprod'],
+                                        "Код заказа: ${listcart.id}",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -63,14 +90,14 @@ int count = 1;
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                            '${listcart[index]['totalsum']} P',
+                                            '${listcart['totalsum']} P',
                                             style: const TextStyle(
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          const Text(
-                                            'Заказ собирается',
-                                            style: TextStyle(
+                                          Text(
+                                            '${listcart['status']}',
+                                            style: const TextStyle(
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),
                                           ),

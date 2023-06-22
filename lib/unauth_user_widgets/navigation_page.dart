@@ -28,6 +28,7 @@ class _NavigationWidget extends State<NavigationWidget> {
       backgroundColor: signup_bg, //Color.fromARGB(255, 255, 211, 198),
       appBar: AppBar(
         title: const Text('ХоббиМаркет'),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         foregroundColor: Colors.white,
         backgroundColor: login_bg,

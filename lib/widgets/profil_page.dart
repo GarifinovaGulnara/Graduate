@@ -15,13 +15,9 @@ class ProfilPage extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.02,
             ),
-            Image.asset("assets/logo.png"),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Text(MyApp.UserName, style: const TextStyle(color: Colors.white, fontSize: 18),),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text('Гарифинова Гульнара', style: TextStyle(color: Colors.white, fontSize: 18),),
+              child: Text(MyApp.userName, style: const TextStyle(color: Colors.white, fontSize: 18),),
             ),
             Expanded(
               child: Container(
@@ -57,22 +53,22 @@ class ProfilPage extends StatelessWidget {
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(login_bg)),
                       ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
-              SizedBox(
+                      /* SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
+                      SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.05,
                 child: ElevatedButton(
                   onPressed: (){
-                    Navigator.of(context).pushNamed('catalog_page/profil_page/favorite_list');
+                    Navigator.of(context).pushReplacementNamed('catalog_page/profil_page/favorite_list_widget');
                   },
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(login_bg)), 
                   child: const Row(
                     children: [
-                      Icon(Icons.favorite),
+                      Icon(Icons.logout_outlined),
                       SizedBox(width: 10,), 
                       Text('Избранное')],),
                       ),
-                      ),
+                      ), */
                       SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
                       SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,

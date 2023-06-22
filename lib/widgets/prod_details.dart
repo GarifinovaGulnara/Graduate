@@ -3,47 +3,61 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
+import 'package:graduate_work/main.dart';
 
 class ProductDetails extends StatefulWidget {
   String? id_prod;
   String? name;
+  String? img;
   int? price;
   String? des;
 
-  ProductDetails({Key? key, this.name, this.des, this.id_prod, this.price}) : super(key: key);
+  ProductDetails({Key? key, this.name, this.des, this.id_prod, this.price, this.img}) : super(key: key);
   
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  Color _favIcon = login_bg;
+  Color colorfav = login_bg;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(234, 253, 251, 251),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        foregroundColor: login_bg,
+        foregroundColor: colorfav,
         backgroundColor: Colors.transparent,
-        actions: [IconButton(color: _favIcon,
-          onPressed: (){
-          FirebaseFirestore.instance.collection('FavoriteProd').add({'idprod': widget.id_prod, 'iduser': 1});
-          setState(() {
-            _favIcon = Colors.red;
-          });
-        }, icon: const Icon(Icons.favorite))],),
+        /* actions: [
+          IconButton(onPressed: (){
+            if( colorfav == login_bg){
+              setState(() {
+                FirebaseFirestore.instance.collection('FavoriteProd').add({"iduser": MyApp.idUser, "idprod": widget.id_prod});
+                colorfav = Colors.red;
+              });
+            }else {
+              setState(() async {
+                var collection = FirebaseFirestore.instance.collection('FavoriteProd');
+                var querySnapshot = await collection.get();
+                collection.doc(widget.id_prod).delete();
+                var list = querySnapshot.docs.where((x)=>x['iduser']== MyApp.idUser ? true : false).toList();
+                colorfav = login_bg;
+              });
+            }
+          }, icon: Icon(Icons.favorite))
+        ], */
+        ),
       body: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
-          Image.asset("assets/logo.png", height: MediaQuery.of(context).size.height * 0.3, fit: BoxFit.cover,),
+          Image.network('${widget.img}', height: MediaQuery.of(context).size.height * 0.3, fit: BoxFit.cover,),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
             ),
             child: SingleChildScrollView(
               child: Column(children: [
@@ -54,7 +68,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     child: Text('${widget.name}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
                   SizedBox(
                     height: MediaQuery.of(context).size.width * 0.1,
-                    width: MediaQuery.of(context).size.width * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.04,
                     child: const Text('|', style: TextStyle(fontSize: 36),),),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.2,
@@ -69,7 +83,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: (){
-                    FirebaseFirestore.instance.collection('Cart').add({'totalsum': widget.price, 'idprod': widget.id_prod, 'iduser': 1});
+                    FirebaseFirestore.instance.collection('Cart').add({'totalsum': widget.price, 'idprod': widget.id_prod, 'iduser': MyApp.idUser});
                   }, 
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(btn_color),

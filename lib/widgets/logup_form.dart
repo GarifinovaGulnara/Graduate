@@ -71,7 +71,23 @@ class _LogupFormState extends State<LogupForm> {
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
             OutlinedButton(onPressed: (){
-              FirebaseFirestore.instance.collection('Users').add({'name': controllerName.text, 'login': controllerPhone.text, 'password': controllerPass.text, 'is_admin': false});
+              if(controllerPhone.text.length < 11)
+              {
+                showDialog(context: context, builder: (context) {
+                  return AlertDialog(
+                  title: const Text('Недостаточно символов в поле "Телефон"', style: TextStyle(color: login_bg),),
+                    actions: [
+                    SizedBox( width: MediaQuery.of(context).size.width * 0.04,),
+                                        OutlinedButton(onPressed: (){
+                                          Navigator.of(context).pop();
+                                        }, 
+                                        child: const Text('Ок'), style: ButtonStyle(foregroundColor: MaterialStateProperty.all(login_bg))),
+                                      ],
+                                    );
+                                });
+              }else{
+                FirebaseFirestore.instance.collection('Users').add({'name': controllerName.text, 'login': controllerPhone.text, 'password': controllerPass.text, 'is_manager': false});
+              }
             }, 
               child: const Text('Зарегистрироваться'), 
               style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),),

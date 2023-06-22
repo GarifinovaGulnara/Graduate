@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
+import 'package:graduate_work/main.dart';
 
 class OrdersWidget extends StatefulWidget {
   const OrdersWidget({Key? key}) : super(key: key);
@@ -8,13 +9,53 @@ class OrdersWidget extends StatefulWidget {
   @override
   State<OrdersWidget> createState() => _OrdersWidget();
 }
+class newClass
+{
+  late String idItem;
+  late String name;
+  late int price;
+
+  newClass(String x, String y, int z) {
+    idItem = x;
+    name = y;
+    price = z;
+  }
+}
 
 class _OrdersWidget extends State<OrdersWidget>{
 
-int count = 1;
-  void onPayTap(){
-    Navigator.pushNamed(context, '/auth/catalog_page/cart_page/payment_page');
+Future<void> TakeNameProduct()
+async {
+    var collection = FirebaseFirestore.instance.collection('Products');
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+      var idItem = queryDocumentSnapshot.id;
+      var name = data['name'].toString();
+      var price = data['price'].toString();
+        itemName.add(newClass(idItem, name, int.parse(price)));
+    }
+}
+
+String GetProfuctName(String id)
+{
+  for (var item in itemName) {
+    if(item.idItem == id)
+      {
+        return item.name;
+      }
   }
+  return 'не нашлась ${id}';
+}
+
+@override
+void initState() {
+    TakeNameProduct();
+    super.initState();
+  }
+
+List<newClass> itemName = []; 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,19 +71,19 @@ int count = 1;
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<Object>(
-              stream: FirebaseFirestore.instance.collection('Cart').snapshots(),
+              stream: FirebaseFirestore.instance.collection('Order').snapshots(),
               builder: (context, AsyncSnapshot<dynamic> snapshot) {
                 if(snapshot.data == null){
                       return const CircularProgressIndicator();
                     }
                 else{
-                  
+                  var list = snapshot.data.docs.where((x)=>x['iduser']== MyApp.idUser ? true : false).toList();
                   return ListView.builder(
                       padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.18),
                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                      itemCount: snapshot.data.docs.length,
+                      itemCount: list.length,
                       itemBuilder: (BuildContext context, int index){
-                        var listcart = snapshot.data.docs[index];
+                        var listcart = list[index];
                       if(!snapshot.hasData){
                         return const Center(
                             child: Text('Нет данных'),
@@ -53,12 +94,9 @@ int count = 1;
                           children: [
                             Column(
                               children: [
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.15,
-                                    child: Image.asset("assets/logo.png")),
                                 ListTile(
                                   title: Text(
-                                        listcart['idprod'],
+                                        "Код заказа: ${listcart.id}",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -72,9 +110,9 @@ int count = 1;
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          const Text(
-                                            'Заказ собирается',
-                                            style: TextStyle(
+                                          Text(
+                                            '${listcart['status']}',
+                                            style: const TextStyle(
                                                 color: btn_color,
                                                 fontWeight: FontWeight.bold),
                                           ),

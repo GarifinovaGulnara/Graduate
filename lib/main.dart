@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:graduate_work/authorization.dart';
 import 'package:graduate_work/catalog_page.dart';
 import 'package:graduate_work/constants.dart';
+import 'package:graduate_work/manager_widgets/add_master_class_widget.dart';
+import 'package:graduate_work/manager_widgets/add_prod_widget.dart';
+import 'package:graduate_work/widgets/favorite_list_widget.dart';
 import 'package:graduate_work/widgets/payment_page.dart';
 import 'package:graduate_work/unauth_user_widgets/navigation_page.dart';
-import 'package:graduate_work/widgets/favorite_list.dart';
 import 'package:graduate_work/widgets/orders_list.dart';
+import 'manager_widgets/all_orders_list.dart';
+import 'manager_widgets/main_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +19,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  static String UserName = '';
+  static String userName = '';
+  static String idUser = '';
   const MyApp({super.key});
 
   @override
@@ -45,9 +50,13 @@ class MyApp extends StatelessWidget {
         '/':(context) => const NavigationWidget(),
         '/auth':(context) => const AuthorizationPage(),
         'catalog_page':(context) => const CatalogPage(),
-        'catalog_page/cart_page/payment_page':(context) => const PaymentPage(),
+        '/main_page':(context) => const MainPage(),
+        'catalog_page/cart_page/payment_page':(context) => PaymentPage(),
         'catalog_page/profil_page/orders_list':(context) => const OrdersWidget(),
-        'catalog_page/profil_page/favorite_list':(context) => const FavoriteWidget(),
+        'catalog_page/profil_page/favorite_list_widget':(context) => FavoriteListWidget(),
+        '/main_page/profil_widget/all_orders_list':(context) => const AllOrdersWidget(),
+        '/main_page/profil_widget/add_prod_widget':(context) => const AddProdWidget(),
+        '/main_page/profil_widget/add_master_class_widget':(context) => const AddMasterClassWidget(),
       },
       initialRoute: '/',
     );

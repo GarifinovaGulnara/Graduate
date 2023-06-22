@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graduate_work/constants.dart';
-import 'package:graduate_work/widgets/list_cards_categories.dart';
-import 'package:graduate_work/widgets/profil_page.dart';
+import 'package:graduate_work/manager_widgets/profil_widget.dart';
+
+import 'home_widget.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -13,8 +14,8 @@ class MainPage extends StatefulWidget {
 class _MainPage extends State<MainPage> {
   int _selectedPage = 0;
   final _widgetOptions = <Widget>[
-    const CardsList(),
-    const ProfilPage(),
+    const HomeWidget(),
+    ProfilWidget(),
   ];
   void onSelectedPage(int index) {
     if (_selectedPage == index) return; 
@@ -28,6 +29,7 @@ class _MainPage extends State<MainPage> {
       backgroundColor: signup_bg,
       appBar: AppBar(
         title: const Text('ХоббиМаркет'),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         foregroundColor: Colors.white,
         backgroundColor: login_bg,

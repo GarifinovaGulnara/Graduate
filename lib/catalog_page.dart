@@ -32,6 +32,7 @@ class _CatalogPageState extends State<CatalogPage> {
       backgroundColor: signup_bg,
       appBar: AppBar(
         title: const Text('ХоббиМаркет'),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         foregroundColor: Colors.white,
         backgroundColor: login_bg,
